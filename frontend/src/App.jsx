@@ -13,7 +13,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem("isLoggedIn") === "true");
   const [expenses, setExpenses] = useState([]);
   const [members, setMembers] = useState([]);
-  const [isLoadingMembers, setIsLoadingMembers] = useState(true); // ✅ Loading state
+  const [isLoadingMembers, setIsLoadingMembers] = useState(true); 
 
   const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ function App() {
     if (!token) return;
 
     try {
-      const res = await fetch("http://localhost:5000/api/expense", {
+      const res = await fetch("https://expense-splitter-2.onrender.com/api/expense", {
         method: "GET",
         headers: { "Authorization": `Bearer ${token}` },
       });
@@ -53,7 +53,7 @@ function App() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/members", {
+      const res = await fetch("https://expense-splitter-2.onrender.com/api/members", {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -74,7 +74,7 @@ function App() {
   const addExpense = async (expense) => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("http://localhost:5000/api/expense", {
+      const res = await fetch("https://expense-splitter-2.onrender.com/api/expense", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,7 +97,7 @@ function App() {
   const deleteExpense = async (id) => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`http://localhost:5000/api/expense/${id}`, {
+      const res = await fetch(`https://expense-splitter-2.onrender.com/api/expense/${id}`, {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` },
       });
@@ -112,7 +112,7 @@ function App() {
   const addMember = async (member) => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("http://localhost:5000/api/members", {
+      const res = await fetch("https://expense-splitter-2.onrender.com/api/members", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -134,7 +134,7 @@ function App() {
   const removeMember = async (member) => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`http://localhost:5000/api/members/${member}`, {
+      const res = await fetch(`https://expense-splitter-2.onrender.com/api/members/${member}`, {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` },
       });
@@ -194,7 +194,7 @@ function App() {
   path="/balance-sheet" 
   element={
     isLoggedIn ? (
-      isLoadingMembers || expenses.length === 0 ? ( // ✅ Wait for both members & expenses
+      isLoadingMembers || expenses.length === 0 ? ( 
         <p>⏳ Loading...</p>
       ) : (
         <BalanceSheet expenses={expenses} members={members} />

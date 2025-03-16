@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:5000/api" });
+const API = axios.create({ baseURL: "https://expense-splitter-2.onrender.com/api" });
 
 // Attach the token to every request
 API.interceptors.request.use((req) => {
