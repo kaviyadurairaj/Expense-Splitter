@@ -31,8 +31,8 @@ db.on("error", (err) => {
 
 // Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/expense", authMiddleware, expenseRoutes); // Protect this route
-app.use("/api/members", authMiddleware, memberRoutes); // Protect this route
+app.use("/api/expense", authMiddleware, expenseRoutes); 
+app.use("/api/members", authMiddleware, memberRoutes); 
 app.use("/api/balance", authMiddleware, balanceRoutes); // ✅ Protect this route
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
