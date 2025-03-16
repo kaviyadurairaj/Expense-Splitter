@@ -1,0 +1,23 @@
+.expense-list {
+    background: rgba(255, 255, 255, 0.936);
+    padding: 15px;
+    margin: 10px auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+  }
+  
+  .expense-list h3 {
+    color: #2c507a;
+  }
+  
+  .expense-list ul {
+    list-style: none;
+    padding: 10px;
+  }
+  
+  .expense-list li {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+  
