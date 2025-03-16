@@ -80,6 +80,20 @@ const BalanceSheet = ({ expenses, members = [] }) => {
           ) : (
             <p>No balances to settle.</p>
           )}
+
+          
+          <h3>Transactions</h3>
+          {Object.entries(balances).map(([name, amount], index) =>
+            amount < 0 ? (
+              <p key={index}>
+                {name} owes ₹{Math.abs(amount).toFixed(2)}
+              </p>
+            ) : amount > 0 ? (
+              <p key={index}>
+                {name} will receive ₹{Math.abs(amount).toFixed(2)}
+              </p>
+            ) : null
+          )}
         </>
       )}
     </div>
