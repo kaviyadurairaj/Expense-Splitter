@@ -1,7 +1,7 @@
 const express = require("express");
 const authMiddleware = require("../middleware/auth");
-const Expense = require("../models/Expense"); // ✅ Import Expense model
-const Member = require("../models/Member"); // ✅ Import Member model
+const Expense = require("../models/Expense"); 
+const Member = require("../models/Member"); 
 
 const router = express.Router();
 
@@ -11,7 +11,6 @@ router.get("/", authMiddleware, async (req, res) => {
     const members = await Member.find();
     const balances = {};
 
-    // Create a mapping of userId -> name
     const memberMap = {};
     members.forEach((member) => {
       memberMap[member._id.toString()] = member.name;
@@ -31,27 +30,24 @@ router.get("/", authMiddleware, async (req, res) => {
           balances[memberId] = (balances[memberId] || 0) - memberShare;
           payerShare -= memberShare;
         });
-        balances[payerId] += payerShare; // ✅ Ensure payer is credited correctly
+        balances[payerId] += payerShare; 
       } else {
-        // Equal split case
         const share = amount / members.length;
         members.forEach((member) => {
           const memberId = member._id.toString();
           if (!balances[memberId]) balances[memberId] = 0;
 
           if (memberId === payerId) {
-            balances[memberId] += amount; // Payer initially pays full amount
+            balances[memberId] += amount; 
           }
-          balances[memberId] -= share; // Deduct each member's fair share
+          balances[memberId] -= share; 
         });
       }
     });
-
-    // Convert balances object into an array of { name, amount }
     const formattedBalances = Object.entries(balances).map(
       ([userId, amount]) => ({
         name: memberMap[userId] || "Unknown",
-        amount: parseFloat(amount.toFixed(2)), // ✅ Fix decimals
+        amount: parseFloat(amount.toFixed(2)), 
       })
     );
 
@@ -63,6 +59,5 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// ✅ Export router
 module.exports = router;
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "../css/BalanceSheet.css";
 
 const BalanceSheet = ({ expenses, members = [] }) => {
@@ -6,11 +6,23 @@ const BalanceSheet = ({ expenses, members = [] }) => {
   const [settledMembers, setSettledMembers] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
+  
   useEffect(() => {
-    localStorage.setItem("balances", JSON.stringify(balances));
+    const savedBalances = JSON.parse(localStorage.getItem("balances"));
+    if (savedBalances) {
+      setBalances(savedBalances);
+    }
+  }, []);
+
+  
+  useEffect(() => {
+    if (Object.keys(balances).length > 0) {
+      localStorage.setItem("balances", JSON.stringify(balances));
+    }
   }, [balances]);
 
-  const calculateBalances = () => {
+  
+  const calculateBalances = useCallback(() => {
     if (!Array.isArray(members) || members.length === 0) {
       console.warn("⏳ Waiting for members to load...");
       return;
@@ -25,16 +37,17 @@ const BalanceSheet = ({ expenses, members = [] }) => {
       if (splitType === "equal") {
         const share = amount / members.length;
         members.forEach(({ name }) => {
-          if (name === payer)
+          if (name === payer) {
             balanceMap[name] += amount - share * (members.length - 1);
-          else balanceMap[name] -= share;
+          } else {
+            balanceMap[name] -= share;
+          }
         });
       } else if (splitType === "percentage" && percentages) {
         Object.entries(percentages).forEach(([member, percent]) => {
           const memberShare = (amount * percent) / 100;
           if (typeof balanceMap[member] === "number") {
-            if (member === payer) balanceMap[member] += amount - memberShare;
-            else balanceMap[member] -= memberShare;
+            balanceMap[member] += member === payer ? amount - memberShare : -memberShare;
           }
         });
       }
@@ -43,14 +56,15 @@ const BalanceSheet = ({ expenses, members = [] }) => {
     console.log("✅ Final Balances:", balanceMap);
     setBalances(balanceMap);
     setIsLoading(false);
-  };
+  }, [members, expenses]);
 
   useEffect(() => {
     if (members.length > 0 && expenses.length > 0) {
       calculateBalances();
     }
-  }, [expenses, members]);
-  
+  }, [expenses, members, calculateBalances]);
+
+
   const markAsSettled = (name) => {
     setSettledMembers((prev) => ({ ...prev, [name]: true }));
   };
@@ -79,20 +93,6 @@ const BalanceSheet = ({ expenses, members = [] }) => {
             ))
           ) : (
             <p>No balances to settle.</p>
-          )}
-
-          
-          <h3>Transactions</h3>
-          {Object.entries(balances).map(([name, amount], index) =>
-            amount < 0 ? (
-              <p key={index}>
-                {name} owes ₹{Math.abs(amount).toFixed(2)}
-              </p>
-            ) : amount > 0 ? (
-              <p key={index}>
-                {name} will receive ₹{Math.abs(amount).toFixed(2)}
-              </p>
-            ) : null
           )}
         </>
       )}

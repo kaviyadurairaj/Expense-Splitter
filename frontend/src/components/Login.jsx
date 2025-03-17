@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../api"; // Import the login function
+import { login } from "../api"; 
 import "./Auth.css";
 
 const Login = ({ setIsLoggedIn }) => {
@@ -14,15 +14,15 @@ const Login = ({ setIsLoggedIn }) => {
     try {
       const response = await login({ email, password });
 
-      // Store authentication token and user ID
+
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("userId", response.data.userId); // Store userId separately
+      localStorage.setItem("userId", response.data.userId); 
       localStorage.setItem("isLoggedIn", "true");
 
       setIsLoggedIn(true);
 
       alert("✅ Login successful!");
-      navigate("/expense-form"); // Redirect to the Expense Form page
+      navigate("/expense-form"); 
     } catch (error) {
       alert(error.response?.data?.message || "❌ Login failed!");
     }

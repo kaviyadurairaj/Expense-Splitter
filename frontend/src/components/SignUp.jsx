@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signup } from "../api"; // Import the signup function
+import { signup } from "../api"; 
 import "./Auth.css";
 
 const SignUp = () => {
@@ -13,10 +13,10 @@ const SignUp = () => {
     e.preventDefault();
     try {
       const response = await signup({ name, email, password });
-      alert(response.data.message); // Success message
-      navigate("/login"); // Redirect to login page
+      alert(response.data.message); 
+      navigate("/Login"); 
     } catch (error) {
-      alert(error.response?.data?.message || "Signup failed!"); // Error message
+      alert(error.response?.data?.message || "Signup failed!"); 
     }
   };
 
